@@ -2,6 +2,7 @@
 
 //!This middleware upload images to public/uploads, its required to be, otherwise cant continue to addProduct function
 const multer = require("multer");
+const path = require('path');
 
 
 const storage = multer.diskStorage({
