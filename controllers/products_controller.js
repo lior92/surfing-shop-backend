@@ -179,10 +179,15 @@ return res.status(200).json({
 
     const url_image = product.product_image;
     const filename = url_image.split("/uploads/")[1];
-  
-    // Create the file path
-    const filePath = path.join(__dirname, "../public/uploads/", filename);
-  
+
+
+    //Development
+    // const filePath = path.join(__dirname, "../public/uploads/", filename);
+
+    //Production
+    const filePath = path.join(__dirname, "../../uploads/", filename);
+
+
     console.log(filePath)
 
 
