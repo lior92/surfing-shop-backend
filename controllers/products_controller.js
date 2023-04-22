@@ -64,7 +64,7 @@ addProduct: async (req, res) => {
       }
 
       //image required
-      let url_image = req.file.filename
+      let url_image = `https://surf-shop.onrender.com/uploads/${req.file.filename}`;
    if(!url_image){
         throw new Error("cant get url_img");
       }
