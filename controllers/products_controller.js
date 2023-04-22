@@ -125,6 +125,7 @@ updateProduct: async (req, res) => {
       });
     }
   },
+  
   update_product_quantity:async(req,res)=>{
     try { 
       const {quantity,cart_id , product_id} = req.body
