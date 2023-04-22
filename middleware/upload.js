@@ -2,13 +2,12 @@
 
 //!This middleware upload images to public/uploads, its required to be, otherwise cant continue to addProduct function
 const multer = require("multer");
-const path = require('path');
 
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
 
-    cb(null, path.join(__dirname, 'public', 'uploads'));
+   cb(null, "https://surf-shop.onrender.com/public/uploads/");
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
