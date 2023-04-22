@@ -1,5 +1,7 @@
 const Product = require("../models/Product");
 const Cart = require("../models/Cart");
+const fs = require('fs');
+const path = require("path");
 
 module.exports = {
   getAllProducts: async (req, res) => {
@@ -65,6 +67,7 @@ addProduct: async (req, res) => {
 
       //image required
       let url_image = `https://surf-shop.onrender.com/uploads/${req.file.filename}`;
+      // let url_image = `http://localhost:4000/uploads/${req.file.filename}`;
    if(!url_image){
         throw new Error("cant get url_img");
       }
@@ -108,6 +111,7 @@ updateProduct: async (req, res) => {
       let url_image;
       if (req.file) {
         url_image = `https://surf-shop.onrender.com/uploads/${req.file.filename}`;
+        // url_image = `http://localhost:4000/uploads/${req.file.filename}`;
         req.body.product_image = url_image;
       }
 
@@ -161,21 +165,56 @@ return res.status(200).json({
  },
 
  deleteProduct: async (req, res) => {
+
   try {
+
     const product_id = req.params.product_id;
-    console.log(product_id)
+    const product = await Product.findById(product_id);
+  
+    if (!product) {
+      throw new Error("Product not found");
+    }
 
+
+
+    const url_image = product.product_image;
+    const filename = url_image.split("/uploads/")[1];
+  
+    // Create the file path
+    const filePath = path.join(__dirname, "../public/uploads/", filename);
+  
+    console.log(filePath)
+
+
+    // Delete the image file from the file system
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+    });
+  
+    // Delete the product from the database
     await Product.findByIdAndDelete(product_id);
-
+  
     return res.status(200).json({
       success: true,
-      message: "success to delete product",
+      message: "Success to delete product",
     });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
-      message: "error in delete product request",
+      message: "Error in delete product request",
       error: error.message,
     });
   }
-},
+  
+}
+
+
+
+
+
+
+
 };
