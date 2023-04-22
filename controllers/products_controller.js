@@ -64,7 +64,7 @@ addProduct: async (req, res) => {
       }
 
       //image required
-      let url_image = `http://localhost:${process.env.PORT}/uploads/${req.file.filename}`;
+      let url_image = `https://surf-shop.onrender.com/uploads/${req.file.filename}`;
    if(!url_image){
         throw new Error("cant get url_img");
       }
@@ -107,7 +107,7 @@ updateProduct: async (req, res) => {
       //Make it optional
       let url_image;
       if (req.file) {
-        url_image = `http://localhost:${process.env.PORT}/uploads/${req.file.filename}`;
+        url_image = `https://surf-shop.onrender.com/uploads/${req.file.filename}`;
         req.body.product_image = url_image;
       }
 
