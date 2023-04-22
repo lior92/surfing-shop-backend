@@ -1,5 +1,4 @@
 
-
 //!This middleware upload images to public/uploads, its required to be, otherwise cant continue to addProduct function
 const multer = require("multer");
 
@@ -30,3 +29,4 @@ const upload = multer({
 });
 
 module.exports = upload;
+
