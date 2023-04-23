@@ -164,22 +164,22 @@ return res.status(200).json({
     }
  },
 
- deleteProduct:async (req, res) => {
+ deleteProduct: async (req, res) => {
   try {
     const product_id = req.params.product_id;
     const product = await Product.findById(product_id);
-
+  
     if (!product) {
       throw new Error("Product not found");
     }
 
-    // Delete the product image from the uploads folder
-    const imagePath = path.join(__dirname, "../uploads", product.product_image);
+    // Delete the product image file
+    const imagePath = path.join(__dirname, '..', 'uploads', product.product_image);
     fs.unlinkSync(imagePath);
 
     // Delete the product from the database
     await Product.findByIdAndDelete(product_id);
-
+  
     return res.status(200).json({
       success: true,
       message: "Success to delete product",
@@ -192,8 +192,6 @@ return res.status(200).json({
     });
   }
 }
-
-
 
 
 
