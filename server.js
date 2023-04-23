@@ -3,6 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
+const fs = require('fs');
 
 const usersRouter = require("./routes/users_router");
 const productsRouter = require('./routes/productsRouter');
@@ -21,6 +22,34 @@ app.use(
     origin: ["http://localhost:3000", "http://localhost:3001","http://localhost:5173","http://localhost:5174"],
   })
 );
+
+// Set up the static directory for serving files
+app.use(express.static(path.join(__dirname, "public")));
+
+// Define a route for getting all the images in the uploads directory
+app.get("/uploads", (req, res) => {
+  // Use the fs module to read the contents of the uploads directory
+  fs.readdir("./public/uploads", (err, files) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error getting images");
+    } else {
+      // Filter the files array to only include image files
+      const images = files.filter(file => {
+        return file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif");
+      });
+      
+      // Send the list of image files in the response
+      res.send(images);
+    }
+  });
+});
+
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
 
 app.use(logger("dev"));
 app.use(express.json());
