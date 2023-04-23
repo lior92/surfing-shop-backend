@@ -164,44 +164,22 @@ return res.status(200).json({
     }
  },
 
- deleteProduct: async (req, res) => {
-
+ deleteProduct:async (req, res) => {
   try {
-
     const product_id = req.params.product_id;
     const product = await Product.findById(product_id);
-  
+
     if (!product) {
       throw new Error("Product not found");
     }
 
+    // Delete the product image from the uploads folder
+    const imagePath = path.join(__dirname, "../uploads", product.image);
+    fs.unlinkSync(imagePath);
 
-
-    const url_image = product.product_image;
-    const filename = url_image.split("/uploads/")[1];
-
-
-    //Development
-    // const filePath = path.join(__dirname, "../public/uploads/", filename);
-
-    //Production
-    const filePath = path.join(__dirname, "../../uploads/", filename);
-
-
-    console.log(filePath)
-
-
-    // Delete the image file from the file system
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    });
-  
     // Delete the product from the database
     await Product.findByIdAndDelete(product_id);
-  
+
     return res.status(200).json({
       success: true,
       message: "Success to delete product",
@@ -213,7 +191,6 @@ return res.status(200).json({
       error: error.message,
     });
   }
-  
 }
 
 
