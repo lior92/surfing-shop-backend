@@ -165,33 +165,43 @@ return res.status(200).json({
  },
 
  deleteProduct: async (req, res) => {
+
   try {
+
     const product_id = req.params.product_id;
     const product = await Product.findById(product_id);
-
+  
     if (!product) {
       throw new Error("Product not found");
     }
 
-    // Get the filename from the image URL
-    const imageUrl = product.product_image;
-    const filename = imageUrl.substring(imageUrl.lastIndexOf('/')+1);
 
-    // Construct the path to the image file
-    const imagePath = path.join(__dirname, '../uploads/', filename);
 
-    // Delete the image file from the uploads folder
-    fs.unlink(imagePath, (err) => {
+    const url_image = product.product_image;
+    const filename = url_image.split("/uploads/")[1];
+
+
+    //Development
+    // const filePath = path.join(__dirname, "../public/uploads/", filename);
+
+    //Production
+    const filePath = path.join(__dirname, "../../uploads/", filename);
+
+
+    console.log(filePath)
+
+
+    // Delete the image file from the file system
+    fs.unlink(filePath, (err) => {
       if (err) {
         console.error(err);
-        throw new Error("Failed to delete image");
+        return;
       }
-      console.log(`Deleted image file: ${imagePath}`);
     });
-
+  
     // Delete the product from the database
     await Product.findByIdAndDelete(product_id);
-
+  
     return res.status(200).json({
       success: true,
       message: "Success to delete product",
@@ -203,7 +213,12 @@ return res.status(200).json({
       error: error.message,
     });
   }
+  
 }
+
+
+
+
 
 
 
