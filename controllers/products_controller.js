@@ -168,18 +168,30 @@ return res.status(200).json({
   try {
     const product_id = req.params.product_id;
     const product = await Product.findById(product_id);
-  
+
     if (!product) {
       throw new Error("Product not found");
     }
 
-    // Delete the product image file
-    const imagePath = path.join(__dirname, '..', 'uploads', product.product_image);
-    fs.unlinkSync(imagePath);
+    // Get the filename from the image URL
+    const imageUrl = product.product_image;
+    const filename = imageUrl.substring(imageUrl.lastIndexOf('/')+1);
+
+    // Construct the path to the image file
+    const imagePath = path.join(__dirname, '../uploads/', filename);
+
+    // Delete the image file from the uploads folder
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(err);
+        throw new Error("Failed to delete image");
+      }
+      console.log(`Deleted image file: ${imagePath}`);
+    });
 
     // Delete the product from the database
     await Product.findByIdAndDelete(product_id);
-  
+
     return res.status(200).json({
       success: true,
       message: "Success to delete product",
@@ -192,8 +204,6 @@ return res.status(200).json({
     });
   }
 }
-
-
 
 
 
