@@ -45,12 +45,6 @@ app.get("/uploads", (req, res) => {
   });
 });
 
-
-// Start the server
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
-});
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
