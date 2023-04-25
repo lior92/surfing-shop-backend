@@ -58,12 +58,18 @@ module.exports = {
         throw new Error("required fields are missing");
       }
   
+console.log(req.file.path)
+
       // read the uploaded image file as a buffer
       const imageBuffer = fs.readFileSync(req.file.path);
   
+console.log(imageBuffer)
+
       // convert the buffer to base64
       const imageBase64 = imageBuffer.toString('base64');
   
+console.log(imageBase64)
+
       // create a new product object with the base64-encoded image
       const new_product = new Product({
         product_category,
