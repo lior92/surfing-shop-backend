@@ -46,29 +46,23 @@ module.exports = {
     }
   },
   addProduct: async (req, res) => {
+
+
+
     try {
       const {
         product_name,
         product_price,
         product_description,
         product_category,
+        product_image
       } = req.body;
   
-      if (!product_name || !product_price || !product_category || !product_description ) {
+console.log(req.body)
+
+      if (!product_name || !product_price || !product_category || !product_description || !product_image) {
         throw new Error("required fields are missing");
       }
-  
-console.log(req.file.path)
-
-      // read the uploaded image file as a buffer
-      const imageBuffer = fs.readFileSync(req.file.path);
-  
-console.log(imageBuffer)
-
-      // convert the buffer to base64
-      const imageBase64 = imageBuffer.toString('base64');
-  
-console.log(imageBase64)
 
       // create a new product object with the base64-encoded image
       const new_product = new Product({
@@ -76,14 +70,11 @@ console.log(imageBase64)
         product_name,
         product_price,
         product_description: product_description || "",
-        product_image: `data:${req.file.mimetype};base64,${imageBase64}`,
+        product_image
       });
   
       // save the new product to the database
       await new_product.save();
-  
-      // delete the uploaded image file from the server
-      fs.unlinkSync(req.file.path);
   
       return res.status(200).json({
         success: true,

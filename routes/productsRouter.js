@@ -23,8 +23,8 @@ router.get('/all_products', getAllProducts);
 router.get('/get_by_id/:product_id', getProductById);
 
 //Restricted access only for editor and manager
-router.post('/add_product',upload.single('product_image'),editorAuth, addProduct);
-router.put('/update/:product_id',upload.single('product_image'),editorAuth, updateProduct);
+router.post('/add_product',editorAuth, addProduct);
+router.put('/update/:product_id',editorAuth, updateProduct);
 router.delete('/delete/:product_id', deleteProduct)
 router.put('/update_quantity',adminAuth,update_product_quantity)
 
