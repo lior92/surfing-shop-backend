@@ -47,8 +47,6 @@ module.exports = {
   },
   addProduct: async (req, res) => {
 
-
-
     try {
       const {
         product_name,
@@ -57,8 +55,7 @@ module.exports = {
         product_category,
         product_image
       } = req.body;
-  
-console.log(req.body)
+
 
       if (!product_name || !product_price || !product_category || !product_description || !product_image) {
         throw new Error("required fields are missing");
@@ -90,35 +87,40 @@ console.log(req.body)
   },
   
 
-updateProduct: async (req, res) => {
+  updateProduct: async (req, res) => {
     try {
       const product_id = req.params.product_id;
       if (!product_id) {
         throw new Error("Product ID must be provided");
       }
+  
+console.log(req.body)
 
-      //Make it optional
-      let url_image;
-      if (req.file) {
-        url_image = `https://surf-shop.onrender.com/uploads/${req.file.filename}`;
-        // url_image = `http://localhost:4000/uploads/${req.file.filename}`;
-        req.body.product_image = url_image;
+
+      let product_image;
+      if (req.body.product_image) {
+        product_image = req.body.product_image;
       }
+  
+
+      // console.log(req.body)
+
 
       await Product.findByIdAndUpdate(product_id, req.body);
-
+  
       return res.status(200).json({
         success: true,
-        message: "success to update product",
+        message: "Product updated successfully",
       });
     } catch (error) {
-      // console.log(error)
+      console.log(error);
       return res.status(500).json({
-        message: "error in update product request",
+        message: "Failed to update product",
         error: error.message,
       });
     }
   },
+  
   
   update_product_quantity:async(req,res)=>{
     try { 
