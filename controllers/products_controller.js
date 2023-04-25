@@ -164,59 +164,31 @@ return res.status(200).json({
  },
 
  deleteProduct: async (req, res) => {
-
   try {
+    const { product_id } = req.params;
 
-    const product_id = req.params.product_id;
+    // find the product by id
     const product = await Product.findById(product_id);
-  
+
     if (!product) {
-      throw new Error("Product not found");
+      throw new Error("product not found");
     }
 
+    // delete the product from the database
+    await product.deleteOne();
 
-
-    const url_image = product.product_image;
-    const filename = url_image.split("/uploads/")[1];
-
-
-    //Development
-    // const filePath = path.join(__dirname, "../public/uploads/", filename);
-
-    //Production
-    const filePath = path.join(__dirname, "../../uploads/", filename);
-
-
-    console.log(filePath)
-
-
-    // Delete the image file from the file system
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    });
-  
-    // Delete the product from the database
-    await Product.findByIdAndDelete(product_id);
-  
     return res.status(200).json({
       success: true,
-      message: "Success to delete product",
+      message: "product deleted successfully",
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return res.status(500).json({
-      message: "Error in delete product request",
+      message: "error in delete product request",
       error: error.message,
     });
   }
-  
 }
-
-
-
 
 
 
