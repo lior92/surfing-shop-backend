@@ -175,7 +175,6 @@ module.exports = {
     try {
       const user_id = req.body.user_id;
 
-
       if (!user_id) {
         throw new Error("User id must be provided");
       }
@@ -235,8 +234,6 @@ module.exports = {
   },
   authToken: async (req, res) => {
  
-
-    
     //check if token exists in the cookie
     try {
 

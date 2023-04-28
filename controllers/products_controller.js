@@ -45,6 +45,7 @@ module.exports = {
       });
     }
   },
+  
   addProduct: async (req, res) => {
 
     try {
@@ -86,7 +87,6 @@ module.exports = {
     }
   },
   
-
   updateProduct: async (req, res) => {
     try {
       const product_id = req.params.product_id;
@@ -94,16 +94,11 @@ module.exports = {
         throw new Error("Product ID must be provided");
       }
   
-console.log(req.body)
-
 
       let product_image;
       if (req.body.product_image) {
         product_image = req.body.product_image;
       }
-  
-
-      // console.log(req.body)
 
 
       await Product.findByIdAndUpdate(product_id, req.body);
@@ -120,7 +115,6 @@ console.log(req.body)
       });
     }
   },
-  
   
   update_product_quantity:async(req,res)=>{
     try { 
@@ -182,8 +176,6 @@ return res.status(200).json({
     });
   }
 }
-
-
 
 
 };

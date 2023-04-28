@@ -19,8 +19,10 @@ module.exports = {
       }
 
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      const user_email = decode.user_email;
-      const chat = await Client_msg.findOne({ user_email });
+
+      const user_id = decode._id;
+
+      const chat = await Client_msg.findOne({ user_id });
 
       if (chat) {
         //Use html
@@ -30,7 +32,7 @@ module.exports = {
         //Need also the email that manager will be able to recognize the user
         const new_message = new Client_msg({
           message,
-          user_email,
+          user_id,
           chat_status,
         });
         await new_message.save();
@@ -52,13 +54,11 @@ module.exports = {
   getMessage: async (req, res) => {
     console.log("client_support");
     try {
-      //get all messages with current user_email from database
+      //get all messages with current user_id from database
 
 
       console.log(req.headers)
       const token = req.headers.authorization.split(' ')[1];
-
-      console.log(token)
 
 
 
@@ -67,9 +67,9 @@ module.exports = {
         throw new Error("Invalid token");
       }
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      const user_email = decode.user_email;
+      const user_id = decode._id;
 
-      const my_chat = await Client_msg.find({ user_email });
+      const my_chat = await Client_msg.find({ user_id });
 
       if (!my_chat) {
         throw new Error("Could not find my messages");
@@ -96,9 +96,9 @@ module.exports = {
         throw new Error("Invalid token");
       }
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      const user_email = decode.user_email;
+      const user_id = decode._id;
 
-      await Client_msg.findOneAndDelete({ user_email });
+      await Client_msg.findOneAndDelete({ user_id });
 
       return res.status(200).json({
         success: true,

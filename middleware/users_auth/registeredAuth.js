@@ -10,7 +10,6 @@ const jwtAuth = async (req, res, next) => {
 const token = req.headers.authorization.split(' ')[1];
 
 
-
     if (!token) {
       
       throw new Error("No token provided");
@@ -35,6 +34,7 @@ const token = req.headers.authorization.split(' ')[1];
     next();
     
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "authentication failed",
       error: error.message,

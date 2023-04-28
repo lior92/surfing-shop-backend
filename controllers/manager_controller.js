@@ -109,15 +109,20 @@ module.exports = {
 
 getSupportMsg: async (req, res) => {
     try {
-      const all_messages = await Client_msg.find();
+      const all_users = await Client_msg.find();
 
-      if (!all_messages) {
+console.log(all_users)
+
+      if (!all_users) {
         throw new Error("No support messages");
       }
 
+      
+
+
       return res.status(200).json({
         success: true,
-        all_messages,
+        all_users,
       });
     } catch (error) {
       return res.status(500).json({
@@ -129,14 +134,14 @@ getSupportMsg: async (req, res) => {
 
 sendSupportMsg:async(req,res)=>{
 try {
-  //The user email i'll get from getSupportMsg request (client side)
-  const {message,user_email} = req.body
+  //The user id i'll get from getSupportMsg request (client side)
+  const {message,user_id} = req.body
 
-  if(!message||!user_email){
+  if(!message||!user_id){
     throw new Error("All fields are required")
   }
    
-  const chat = await Client_msg.findOne({user_email})
+  const chat = await Client_msg.findOne({user_id})
 
   if(chat){
     //Use html 
@@ -165,13 +170,13 @@ changeStatus:async(req,res) =>{
   
 try {
   
-  const {user_email,chat_status} = req.body
+  const {user_id,chat_status} = req.body
 
-  if(!user_email||!chat_status) {
+  if(!user_id||!chat_status) {
     throw new Error("Bad credentials")
   }
 
-const updated_user =  await Client_msg.findOneAndUpdate({user_email},{chat_status:chat_status})
+const updated_user =  await Client_msg.findOneAndUpdate({user_id},{chat_status:chat_status})
 
   return res.status(201).json({
     success: true,
@@ -198,13 +203,13 @@ const updated_user =  await Client_msg.findOneAndUpdate({user_email},{chat_statu
 deleteChat:async(req,res)=>{
 
   try {
-    const user_email = req.body.user_email
+    const user_id = req.body.user_id
 
-    if(!user_email){
-      throw new Error('Please enter a user email')
+    if(!user_id){
+      throw new Error('Please enter a user id')
     }
 
-  await Client_msg.findOneAndDelete({user_email})
+  await Client_msg.findOneAndDelete({user_id})
 
 
     return res.status(200).json({
