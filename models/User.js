@@ -12,7 +12,7 @@ const user_schema = new Schema({
         type:String,
         required: true,
         unique: true,
-        // match: /^.{0,20}$/,
+        match: /^.{0,20}$/,
         trim: true
     },
     user_email:{
@@ -20,12 +20,13 @@ const user_schema = new Schema({
         required: true,
         unique: true,
         trim: true,
-        // match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     user_phone:{
         type:String,
         required: true,
         trim: true,
+        match:/^(\+)?(?:[0-9] ?){6,14}[0-9]$/
     },
     user_address:{
         type:String,
@@ -36,7 +37,6 @@ const user_schema = new Schema({
         type:String,
         required: true,
         trim: true,
-        // match:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
     },
     user_permission:{
         type:Number,

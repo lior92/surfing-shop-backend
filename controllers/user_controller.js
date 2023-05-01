@@ -15,6 +15,8 @@ module.exports = {
         user_address,
       } = req.body;
 
+
+
       if (
         !user_name ||
         !user_password ||
@@ -30,6 +32,8 @@ module.exports = {
         throw new Error("passwords do not match");
       }
       const hash = await bcrypt.hash(user_password, 12);
+
+
 
       const user = new User({
         user_name,
@@ -116,6 +120,7 @@ module.exports = {
         token,
       });
     } catch (error) {
+      console.log(error)
       return res.status(500).json({
         message: "Invalid credentials",
         error: error.message,
@@ -174,6 +179,9 @@ module.exports = {
   updateUser: async (req, res) => {
     try {
       const user_id = req.body.user_id;
+
+      console.log(user_id)
+
 
       if (!user_id) {
         throw new Error("User id must be provided");

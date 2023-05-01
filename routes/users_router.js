@@ -8,8 +8,10 @@ const {registerUser,loginUser,getUser,getAllUsers,updateUser,deleteUser,authToke
 router.post('/register',registerUser );
 router.post('/login',loginUser);
 router.get('/get_user/:user_id',registeredAuth,getUser)
+
 //only admin can get all users
 router.get('/all_users',adminAuth,getAllUsers)
+
 router.put('/update_user',registeredAuth,updateUser)
 router.delete('/delete_user',registeredAuth,deleteUser)
 router.get('/auth',authToken);
