@@ -26,28 +26,11 @@ app.use(
 // Set up the static directory for serving files
 app.use(express.static(path.join(__dirname, "public")));
 
-// Define a route for getting all the images in the uploads directory
-app.get("/uploads", (req, res) => {
-  // Use the fs module to read the contents of the uploads directory
-  fs.readdir("./public/uploads", (err, files) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error getting images");
-    } else {
-      // Filter the files array to only include image files
-      const images = files.filter(file => {
-        return file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif");
-      });
-      
-      // Send the list of image files in the response
-      res.send(images);
-    }
-  });
-});
+
 
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 

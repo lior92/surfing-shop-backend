@@ -1,6 +1,5 @@
 const router = require('express').Router();
-//middleware for upload images
-const upload = require('../middleware/upload')
+
 
 const adminAuth = require('../middleware/users_auth/adminAuth');
 

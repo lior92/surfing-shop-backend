@@ -4,10 +4,9 @@
 const jwt = require("jsonwebtoken");
 
 const jwtAuth = async (req, res, next) => {
-  console.log('jwt editor')
   try {
     const token = req.headers.authorization.split(' ')[1];
-console.log(token)
+
     if (!token) {
       
       throw new Error("Invalid token");
